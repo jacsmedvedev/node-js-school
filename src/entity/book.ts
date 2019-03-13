@@ -3,6 +3,8 @@ import { Length } from 'class-validator';
 
 @Entity()
 export class Book {
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @Column({length: 80})
     @Length(10, 80)
