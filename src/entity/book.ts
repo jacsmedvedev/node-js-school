@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne, JoinColumn } from 'typeorm';
 import { Length } from 'class-validator';
+import { User } from './user';
 
 @Entity()
 export class Book {
@@ -14,7 +15,11 @@ export class Book {
     @Length(10, 100)
     description: string;
 
-    @Column({length: 100})
-    @Length(10, 100)
-    date: 'date';
+    @CreateDateColumn()
+    @Column('date')
+    date: string;
+
+    @OneToOne(type => User)
+    @JoinColumn()
+    user: User;
 }
