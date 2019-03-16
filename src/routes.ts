@@ -1,6 +1,7 @@
 import * as Router from 'koa-router';
 import controller = require('./controller');
 
+
 const router = new Router();
 
 // GENERAL ROUTES
@@ -13,5 +14,11 @@ router.get('/users/:id', controller.user.getUser);
 router.post('/users', controller.user.createUser);
 router.put('/users/:id', controller.user.updateUser);
 router.delete('/users/:id/books', controller.user.deleteUser);
+
+// BOOK ROUTES
+router.get('/users/:id/books', controller.book.getUserBooks);
+router.post('/users/:id/books', controller.book.addBookToUser);
+router.put('/users/:id/books/:bookid', controller.book.updateUserBook);
+router.delete('/users/:id/books/:bookid', controller.book.deleteBookFronUser);
 
 export { router };
