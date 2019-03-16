@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Length } from 'class-validator';
 import { User } from './user';
 
@@ -19,7 +19,6 @@ export class Book {
     @Column('date')
     date: string;
 
-    @OneToOne(type => User)
-    @JoinColumn()
+    @ManyToOne(type => User, user => user.books)
     user: User;
 }

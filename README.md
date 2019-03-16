@@ -93,7 +93,7 @@ createConnection({
  })
 ```
 
-You can find an implemented **CRUD of the entity user** in the correspondent controller controller/user.ts and its routes in routes.ts file.
+You can find an implemented **CRUD of the entity user** in the correspondent controller controller/user_controller.ts and its routes in routes.ts file.
 
 ## Entities validation
 This project uses the library class-validator, a decorator-based entity validation, which is used directly in the entities files as follows:
