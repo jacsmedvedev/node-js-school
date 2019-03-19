@@ -57,6 +57,8 @@
   "include": [
       "src/**/*",
       "features/**/*",
-      "tests/**/*"
+      "tests/**/*",
+      "tasks/**/*",
+      "examples/**/*"
   ]
 }
