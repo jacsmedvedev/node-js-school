@@ -8,13 +8,15 @@ import * as dotenv from 'dotenv';
 import { createConnection } from 'typeorm';
 import 'reflect-metadata';
 import * as PostgressConnectionStringParser from 'pg-connection-string';
+import * as serve from 'koa-static';
 
+const koaSwagger = require('koa2-swagger-ui');
 import { logger } from './logging';
 import { config } from './config';
 import { router } from './routes';
 
 // Load environment variables from .env file, where API keys and passwords are configured
-dotenv.config({ path: '.env' });
+dotenv.config({path: '.env'});
 
 // Get DB connection options from env variable
 const connectionOptions = PostgressConnectionStringParser.parse(config.databaseUrl);
@@ -32,15 +34,25 @@ createConnection({
     synchronize: true,
     logging: false,
     entities: [
-       'dist/entity/**/*.js',
-       'src/entity/**/*.ts'
+        'dist/entity/**/*.js',
+        'src/entity/**/*.ts'
     ],
     extra: {
         ssl: config.dbsslconn, // if not development, will use SSL
     }
- }).then(async connection => {
+}).then(async connection => {
 
     const app = new Koa();
+
+    app.use(serve('public'));
+    app.use(
+        koaSwagger({
+            routePrefix: '/swagger',
+            swaggerOptions: {
+                url: '/swagger.yml'
+            }
+        })
+    );
 
     // Provides important security headers to make your app more secure
     app.use(helmet());
@@ -55,7 +67,7 @@ createConnection({
     app.use(bodyParser());
 
     // JWT middleware -> below this line routes are only reached if JWT token is valid, secret as env variable
-    app.use(jwt({ secret: config.jwtSecret }));
+    // app.use(jwt({ secret: config.jwtSecret }));
 
     // this routes are protected by the JWT middleware, also include middleware to respond with "Method Not Allowed - 405".
     app.use(router.routes()).use(router.allowedMethods());
